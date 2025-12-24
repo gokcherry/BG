@@ -2,6 +2,7 @@
 
 #include "sceneobject.hpp"
 #include <glm/glm.hpp>
+#include <string>
 namespace graf
 {
     class ShaderProgram;

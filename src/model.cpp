@@ -76,6 +76,11 @@ namespace graf
         transform->update();
         updateChilds();
         program->setMat4(UniformNames::World,transform->parentCombinedMatrix*transform->worldMatrix);
+        if(!m_textureName.empty())
+        {
+            TextureManager::activateTexture(m_textureName);
+            program->setInt("mySampler",0);
+        }
         m_vao->draw();
     }
     string Model::getTextureName() const

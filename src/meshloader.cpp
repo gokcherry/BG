@@ -14,6 +14,7 @@ namespace graf
     string ShapeType::Quad = "Quad";
     string ShapeType::Cylinder = "Cylinder";
     string ShapeType::Cone = "Cone";
+    string ShapeType::Pyramid = "Pyramid";
     MeshLoader* MeshLoader::m_instance=nullptr;
     MeshLoader::MeshLoader()
     {
@@ -106,6 +107,10 @@ namespace graf
             return createCircle();
         if(shapeType==ShapeType::Cone)
             return createCone();
+        if(shapeType==ShapeType::Cylinder)
+            return createCylinder();
+        if(shapeType==ShapeType::Pyramid)
+            return createPyramid();
         return nullptr;
     }
     VertexArrayObject* MeshLoader::createCone()
@@ -210,6 +215,168 @@ namespace graf
         else
         {
             vao = loader->m_vaos[ShapeType::Cone];
+        }
+        return vao;        
+    }
+    VertexArrayObject* MeshLoader::createCylinder()
+    {
+        VertexArrayObject* vao=nullptr;
+        auto loader = getInstance();
+        if(loader->m_vaos.count(ShapeType::Cylinder)==0)
+        {
+            std::vector<VertexUnlit> vertices;
+            std::vector<unsigned int> indices;
+            float angleStep = 10.0f;
+            int segmentCount = static_cast<int>(360.0f/angleStep);
+            //side vertices
+            for(int i=0;i<segmentCount;i++)
+            {
+                float rad = glm::radians(i*angleStep);
+                float x = cosf(rad);
+                float z = sinf(rad);
+                float texS = static_cast<float>(i)/segmentCount;
+                VertexUnlit bottom;
+                bottom.position = glm::vec3(x,-1.0f,z);
+                bottom.texCoords = glm::vec2(texS,0.0f);
+                VertexUnlit top;
+                top.position = glm::vec3(x,1.0f,z);
+                top.texCoords = glm::vec2(texS,1.0f);
+                vertices.push_back(bottom);
+                vertices.push_back(top);
+            }
+            //side indices
+            for(int i=0;i<segmentCount;i++)
+            {
+                int next = (i+1)%segmentCount;
+                unsigned int b0 = i*2;
+                unsigned int t0 = i*2+1;
+                unsigned int b1 = next*2;
+                unsigned int t1 = next*2+1;
+                indices.push_back(b0); indices.push_back(b1); indices.push_back(t1);
+                indices.push_back(b0); indices.push_back(t1); indices.push_back(t0);
+            }
+            //top and bottom caps
+            unsigned int topCenterIndex = vertices.size();
+            VertexUnlit topCenter;
+            topCenter.position = glm::vec3(0.0f,1.0f,0.0f);
+            topCenter.texCoords = glm::vec2(0.5f,0.5f);
+            vertices.push_back(topCenter);
+
+            unsigned int bottomCenterIndex = vertices.size();
+            VertexUnlit bottomCenter;
+            bottomCenter.position = glm::vec3(0.0f,-1.0f,0.0f);
+            bottomCenter.texCoords = glm::vec2(0.5f,0.5f);
+            vertices.push_back(bottomCenter);
+
+            for(int i=0;i<segmentCount;i++)
+            {
+                int next = (i+1)%segmentCount;
+                unsigned int t0 = i*2+1;
+                unsigned int t1 = next*2+1;
+                unsigned int b0 = i*2;
+                unsigned int b1 = next*2;
+
+                indices.push_back(topCenterIndex);
+                indices.push_back(t0);
+                indices.push_back(t1);
+
+                indices.push_back(bottomCenterIndex);
+                indices.push_back(b1);
+                indices.push_back(b0);
+            }
+
+            VertexBuffer* vbo = new VertexBuffer();
+            vbo->create(&vertices[0],vertices.size()*sizeof(VertexUnlit));
+
+            IndexBuffer* ibo = new IndexBuffer();
+            ibo->create(indices.data(),indices.size()*sizeof(unsigned int));
+
+
+            vao = new VertexArrayObject();
+            vao->create();
+            vao->setVertexBuffer(vbo);
+            vao->setIndexBuffer(ibo);
+            vao->addAttributes(VertexAttributeType::Position);
+            vao->addAttributes(VertexAttributeType::Texture);
+            vao->activateAttributes();           
+
+            loader->m_vaos[ShapeType::Cylinder] = vao;
+        }
+        else
+        {
+            vao = loader->m_vaos[ShapeType::Cylinder];
+        }
+        return vao;        
+    }
+    VertexArrayObject* MeshLoader::createPyramid()
+    {
+        VertexArrayObject* vao=nullptr;
+        auto loader = getInstance();
+        if(loader->m_vaos.count(ShapeType::Pyramid)==0)
+        {
+            std::vector<VertexUnlit> vertices;
+            std::vector<unsigned int> indices;
+
+            //base
+            VertexUnlit v0; v0.position = glm::vec3(-1.0f,-1.0f,-1.0f); v0.texCoords = glm::vec2(0.0f,0.0f);
+            VertexUnlit v1; v1.position = glm::vec3(1.0f,-1.0f,-1.0f);  v1.texCoords = glm::vec2(1.0f,0.0f);
+            VertexUnlit v2; v2.position = glm::vec3(1.0f,-1.0f,1.0f);   v2.texCoords = glm::vec2(1.0f,1.0f);
+            VertexUnlit v3; v3.position = glm::vec3(-1.0f,-1.0f,1.0f);  v3.texCoords = glm::vec2(0.0f,1.0f);
+            VertexUnlit apex; apex.position = glm::vec3(0.0f,1.0f,0.0f); apex.texCoords = glm::vec2(0.5f,0.0f);
+
+            //side faces (duplicate vertices for texture)
+            VertexUnlit s0 = v0; s0.texCoords = glm::vec2(0.0f,1.0f);
+            VertexUnlit s1 = v1; s1.texCoords = glm::vec2(1.0f,1.0f);
+            VertexUnlit s2 = v2; s2.texCoords = glm::vec2(1.0f,1.0f);
+            VertexUnlit s3 = v3; s3.texCoords = glm::vec2(0.0f,1.0f);
+            VertexUnlit a0 = apex; a0.texCoords = glm::vec2(0.5f,0.0f);
+            VertexUnlit a1 = apex; a1.texCoords = glm::vec2(0.5f,0.0f);
+            VertexUnlit a2 = apex; a2.texCoords = glm::vec2(0.5f,0.0f);
+            VertexUnlit a3 = apex; a3.texCoords = glm::vec2(0.5f,0.0f);
+
+            //push base
+            unsigned int baseStart = vertices.size();
+            vertices.push_back(v0); vertices.push_back(v1); vertices.push_back(v2); vertices.push_back(v3);
+            //side sets
+            unsigned int sideStart = vertices.size();
+            vertices.push_back(s0); vertices.push_back(s1); vertices.push_back(a0); //front
+            vertices.push_back(s1); vertices.push_back(s2); vertices.push_back(a1); //right
+            vertices.push_back(s2); vertices.push_back(s3); vertices.push_back(a2); //back
+            vertices.push_back(s3); vertices.push_back(s0); vertices.push_back(a3); //left
+
+            //indices
+            indices = {
+                baseStart, baseStart+1, baseStart+2,
+                baseStart, baseStart+2, baseStart+3
+            };
+            for(int face=0; face<4; ++face)
+            {
+                unsigned int idx = sideStart + face*3;
+                indices.push_back(idx);
+                indices.push_back(idx+1);
+                indices.push_back(idx+2);
+            }
+
+            VertexBuffer* vbo = new VertexBuffer();
+            vbo->create(&vertices[0],vertices.size()*sizeof(VertexUnlit));
+
+            IndexBuffer* ibo = new IndexBuffer();
+            ibo->create(indices.data(),indices.size()*sizeof(unsigned int));
+
+
+            vao = new VertexArrayObject();
+            vao->create();
+            vao->setVertexBuffer(vbo);
+            vao->setIndexBuffer(ibo);
+            vao->addAttributes(VertexAttributeType::Position);
+            vao->addAttributes(VertexAttributeType::Texture);
+            vao->activateAttributes();           
+
+            loader->m_vaos[ShapeType::Pyramid] = vao;
+        }
+        else
+        {
+            vao = loader->m_vaos[ShapeType::Pyramid];
         }
         return vao;        
     }

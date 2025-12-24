@@ -44,6 +44,10 @@ namespace graf
     {
         glUniformMatrix4fv(m_variables[varName],1,0,&value[0][0]);
     }
+    void ShaderProgram::setInt(const string &varName, int value)
+    {
+        glUniform1i(m_variables[varName],value);
+    }
     void ShaderProgram::use()
     {
         glUseProgram(m_id);

@@ -10,6 +10,7 @@ namespace graf
         this->y = y;
         this->width = width;
         this->height = height;
+        m_camera = nullptr;
 
     }
     void ViewPort::activate()
@@ -32,7 +33,8 @@ namespace graf
     }
     void ViewPort::attachCamera(Camera *camera)
     {
-        camera->setPerspective(camera->m_fov,width/height,camera->m_near,camera->m_far);
+        float aspect = static_cast<float>(width)/static_cast<float>(height);
+        camera->setPerspective(camera->m_fov,aspect,camera->m_near,camera->m_far);
 
         m_camera= camera;
 

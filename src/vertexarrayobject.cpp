@@ -61,8 +61,10 @@ namespace graf
             break;
         case VertexAttributeType::Color:
             m_vertexSize+= 4*sizeof(float);
+            break;
         case VertexAttributeType::Texture:
             m_vertexSize+= 2*sizeof(float);
+            break;
         default:
             break;
         }
@@ -83,10 +85,12 @@ namespace graf
                 break;
             case VertexAttributeType::Color:
                 floatCount= 4;
-                activeAttributeSize = sizeof(float)*3;
+                activeAttributeSize = sizeof(float)*4;
+                break;
             case VertexAttributeType::Texture:
                 floatCount= 2;
                 activeAttributeSize = sizeof(float)*2;
+                break;
             default:
                 break;
             }
