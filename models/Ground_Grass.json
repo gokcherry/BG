@@ -1,6 +1,6 @@
 {
     "ModelName":"Ground",
-    "TextureName":"grass.ppm",
+    "TextureName":"grass.jpg",
     "ShaderProgramName":"UnlitTexturedShader",
     "IsBasicShape":false,
     "MeshFile":"cube.mesh",

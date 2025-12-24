@@ -1,6 +1,6 @@
 {
     "ModelName":"Wall",
-    "TextureName":"wall.ppm",
+    "TextureName":"wall.jpg",
     "ShaderProgramName":"UnlitTexturedShader",
     "IsBasicShape":false,
     "MeshFile":"cube.mesh",

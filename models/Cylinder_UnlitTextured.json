@@ -1,6 +1,6 @@
 {
     "ModelName":"Cylinder",
-    "TextureName":"wall.ppm",
+    "TextureName":"wall.jpg",
     "ShaderProgramName":"UnlitTexturedShader",
     "IsBasicShape":true,
     "MeshFile":"",

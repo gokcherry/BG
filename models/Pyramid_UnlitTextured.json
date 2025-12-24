@@ -1,6 +1,6 @@
 {
     "ModelName":"Pyramid",
-    "TextureName":"wall.ppm",
+    "TextureName":"wall.jpg",
     "ShaderProgramName":"UnlitTexturedShader",
     "IsBasicShape":true,
     "MeshFile":"",
