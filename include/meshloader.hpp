@@ -15,6 +15,7 @@ namespace graf
         static string Quad;
         static string Cylinder;
         static string Cone;
+        static string Pyramid;
     };
 
     class VertexUnlit
@@ -33,6 +34,8 @@ namespace graf
         static int getVertexFloatCount(const vector<string>& attributes);
         static VertexArrayObject* createCircle();
         static VertexArrayObject* createCone();
+        static VertexArrayObject* createCylinder();
+        static VertexArrayObject* createPyramid();
         MeshLoader();
         static MeshLoader* m_instance;
         static MeshLoader* getInstance();

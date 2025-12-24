@@ -70,13 +70,21 @@ int main(int arc,char** argv)
     graf::Model* model = graf::Model::loadModel("Cone_UnlitTextured");
     graf::Model* model2 = graf::Model::loadModel("Circle_UnlitTextured");
     graf::Model* model3 = graf::Model::loadModel("Cube_UnlitTextured");
-    graf::Camera camera(60,width/height,0.1f,100.0f);
-    graf::Camera camera1(60,width/height,0.1f,100.0f);
+    graf::Model* ground = graf::Model::loadModel("Ground_Grass");
+    graf::Model* wall = graf::Model::loadModel("Wall_Block");
+    graf::Camera camera(60,width/height,0.1f,200.0f);
+    graf::Camera camera1(60,width/height,0.1f,200.0f);
     graf::ViewPort* viewport[2];
     graf::Scene scene;
     model->addChild(model2);
-    viewport[0] = new graf::ViewPort(0,height/2,width,height/2);
-    viewport[1] = new graf::ViewPort(0,0,width,height/2);
+    viewport[0] = new graf::ViewPort(0,0,width,height);
+    viewport[1] = new graf::ViewPort(width*2/3,height*2/3,width/3,height/3);
+
+    camera.transform->position = glm::vec3(0.0f,5.0f,-15.0f);
+    camera.transform->euler.y = 15.0f;
+
+    camera1.transform->position = glm::vec3(-10.0f,10.0f,-10.0f);
+    camera1.transform->euler = glm::vec3(20.0f,45.0f,0.0f);
 
     viewport[0]->attachCamera(&camera);
     viewport[1]->attachCamera(&camera1);
@@ -84,6 +92,8 @@ int main(int arc,char** argv)
     scene.addViewPort(viewport[1]);
     scene.addSceneObject(model);
     scene.addSceneObject(model3);
+    scene.addSceneObject(ground);
+    scene.addSceneObject(wall);
     float w = 1600.0f;
     float h = 900.0f;
     //---------------------------------------------------------------------------
@@ -93,10 +103,13 @@ int main(int arc,char** argv)
 
 
     window.setKeyboardFunction([&](int key,int action){
-        if(key==GLFW_KEY_A) camera.transform->moveLeft();
-        if(key==GLFW_KEY_D)camera.transform->moveRight()          ;
-        if(key==GLFW_KEY_W) camera.transform->moveForward()       ;
-        if(key==GLFW_KEY_S)camera.transform->moveBackward()        ;     
+        auto activeCam = viewport[0]->getCamera();
+        if(!activeCam)
+            return;
+        if(key==GLFW_KEY_A) activeCam->transform->moveLeft();
+        if(key==GLFW_KEY_D)activeCam->transform->moveRight()          ;
+        if(key==GLFW_KEY_W) activeCam->transform->moveForward()       ;
+        if(key==GLFW_KEY_S)activeCam->transform->moveBackward()        ;     
 
     });
     double oldX;
@@ -114,10 +127,11 @@ int main(int arc,char** argv)
 
         double dx = x-oldX;
         double dy = y-oldY;
-        if(window.isMouseRightButtonPressed())
+        auto activeCam = viewport[0]->getCamera();
+        if(activeCam && window.isMouseRightButtonPressed())
         {
-            camera.transform->euler.y+=dx;
-            camera.transform->euler.x+=dy;
+            activeCam->transform->euler.y+=dx;
+            activeCam->transform->euler.x+=dy;
         }
 
         oldX = x;

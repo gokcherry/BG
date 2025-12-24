@@ -1,0 +1,17 @@
+{
+    "ModelName":"Pyramid",
+    "TextureName":"wall.ppm",
+    "ShaderProgramName":"UnlitTexturedShader",
+    "IsBasicShape":true,
+    "MeshFile":"",
+    "ShapeType":"Pyramid",
+    "Position":[
+        0.0,0.0,0.0
+    ],
+    "Euler":[
+        0.0,0.0,0.0
+    ],
+    "Scale":[
+        1.0,1.0,1.0
+    ]
+}

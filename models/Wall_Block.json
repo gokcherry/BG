@@ -1,0 +1,16 @@
+{
+    "ModelName":"Wall",
+    "TextureName":"wall.ppm",
+    "ShaderProgramName":"UnlitTexturedShader",
+    "IsBasicShape":false,
+    "MeshFile":"cube.mesh",
+    "Position":[
+        0.0,5.0,20.0
+    ],
+    "Euler":[
+        0.0,0.0,0.0
+    ],
+    "Scale":[
+        30.0,10.0,1.0
+    ]
+}

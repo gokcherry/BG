@@ -25,12 +25,14 @@ namespace graf
         void removeChild(SceneObject* child);
         SceneObjectType getType() const;
         string getName()const;
+        SceneObject* getParent() const;
         void updateChilds();
     protected:
         friend class Scene;
         SceneObjectList m_childs;
         SceneObjectType m_type;
         string m_name;
+        SceneObject* m_parent;
 
     };
 }
