@@ -26,6 +26,7 @@ namespace graf
         void addVariable(const string& varName);
         void setFloat(const string& varName,float value);
         void setMat4(const string& varName,const glm::mat4& value);
+        void setInt(const string& varName,int value);
         string getErrorMessage(unsigned int shaderId,unsigned int shaderType);
     private:
         unsigned int m_id;
