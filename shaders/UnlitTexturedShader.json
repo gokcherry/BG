@@ -1,0 +1,16 @@
+{
+    "ProgramName":"UnlitTexturedShader",
+    "VertexShader":"unlittextureshader_vertex.glsl",
+    "FragmentShader":"unlittextureshader_fragment.glsl",
+    "Uniforms":[
+        {
+            "Name":"uWorldMatrix",
+            "Type":"mat4"
+        },
+        {
+            "Name":"uProjectionMatrix",
+            "Type":"mat4"
+        }
+    
+    ]
+}

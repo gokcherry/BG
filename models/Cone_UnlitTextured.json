@@ -1,0 +1,17 @@
+{
+    "ModelName":"Cone",
+    "TextureName":"container1.jpg",
+    "ShaderProgramName":"UnlitTexturedShader",
+    "IsBasicShape":true,
+    "MeshFile":"",
+    "ShapeType":"Cone",
+    "Position":[
+        0.0,0.0,5.0
+    ],
+    "Euler":[
+        0.0,0.0,0.0
+    ],
+    "Scale":[
+        1.0,1.0,1.0
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "MeshName":"ikiUcgen",
+    "VertexAttributeCount":2,
+    "VertexAttributes":[
+        "Position",
+        "Texture"
+    ],
+    "TriangleCount":2,
+    "Vertices":[
+       -1.0,   1.0,   5.0,    0.0,    1.0,
+       -1.0,  -1.0,   5.0,    0.0,    0.0,
+        1.0,   -1.0,  5.0,    1.0,    0.0,
+        -1.0,   1.0,  5.0,    0.0,    1.0,
+        1.0,  1.0,    5.0,    1.0,    1.0,
+        1.0,   -1.0,  5.0,    1.0,    0.0
+    ]  
+}

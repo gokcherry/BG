@@ -1,0 +1,16 @@
+{
+    "ModelName":"Cube_UnlitTextured1",
+    "TextureName":"container1.jpg",
+    "ShaderProgramName":"UnlitTexturedShader",
+    "IsBasicShape":false,     
+    "MeshFile":"cube.mesh",
+    "Position":[
+        -10.0,0.0,15.0
+    ],
+    "Euler":[
+        0.0,30.0,40.0
+    ],
+    "Scale":[
+        1.0,6.0,2.0
+    ]
+}
